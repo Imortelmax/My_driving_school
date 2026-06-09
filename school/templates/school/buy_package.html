@@ -1,0 +1,43 @@
+{% extends "school/base.html" %}
+
+{% block title %}Buy Hours{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <i class="bi bi-clock-history"></i> Buy Driving Hours
+            </div>
+            <div class="card-body">
+                {% if price_per_hour %}
+                <div class="alert alert-info mb-4">
+                    <i class="bi bi-info-circle"></i>
+                    Price: <strong>{{ price_per_hour }}€ / hour</strong>
+                </div>
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-credit-card"></i> Pay with Stripe
+                        </button>
+                        <a href="{% url 'student_dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-lg"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

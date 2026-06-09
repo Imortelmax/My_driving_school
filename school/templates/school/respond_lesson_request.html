@@ -1,0 +1,68 @@
+{% extends "school/base.html" %}
+
+{% block title %}Respond to Lesson Request{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-danger text-white">
+                <i class="bi bi-calendar-event"></i> Lesson Request
+            </div>
+            <div class="card-body">
+                {% if responder == 'instructor' %}
+                    <p><strong>Student:</strong> {{ lesson_request.student.get_full_name|default:lesson_request.student.username }}</p>
+                {% else %}
+                    <p><strong>Instructor:</strong> {{ lesson_request.instructor.get_full_name|default:lesson_request.instructor.username }}</p>
+                {% endif %}
+                <p><strong>Date:</strong> {{ lesson_request.date|date:"d/m/Y H:i" }}</p>
+                <p><strong>Location:</strong> {{ lesson_request.location }}</p>
+                <p><strong>Duration:</strong> {{ lesson_request.duration }}h</p>
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2 mb-4">
+                        <button type="submit" name="action" value="accept" class="btn btn-success">
+                            <i class="bi bi-check-lg"></i> Accept
+                        </button>
+                        <button type="submit" name="action" value="refuse" class="btn btn-danger">
+                            <i class="bi bi-x-lg"></i> Refuse
+                        </button>
+                    </div>
+
+                    <hr>
+                    <h6 class="mb-3">Or make a counter-proposal:</h6>
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" name="action" value="counter" class="btn btn-warning">
+                        <i class="bi bi-arrow-left-right"></i> Send Counter-Proposal
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% if responder == 'instructor' %}
+            <a href="{% url 'instructor_lesson_requests' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        {% else %}
+            <a href="{% url 'student_lesson_requests' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

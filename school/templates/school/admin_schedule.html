@@ -1,0 +1,99 @@
+{% extends "school/base.html" %}
+
+{% block title %}General Planning{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>General Planning</h4>
+    <a href="{% url 'create_lesson' %}" class="btn btn-success btn-sm">
+        <i class="bi bi-calendar-plus"></i> Add Appointment
+    </a>
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-header bg-white fw-semibold"><i class="bi bi-funnel"></i> Filter</div>
+    <div class="card-body">
+        <form method="GET" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Instructor</label>
+                <select name="instructor" class="form-select">
+                    <option value="">All instructors</option>
+                    {% for instructor in instructors %}
+                        <option value="{{ instructor.pk }}" {% if selected_instructor == instructor.pk|stringformat:"s" %}selected{% endif %}>
+                            {{ instructor.username }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Student</label>
+                <select name="student" class="form-select">
+                    <option value="">All students</option>
+                    {% for student in students %}
+                        <option value="{{ student.pk }}" {% if selected_student == student.pk|stringformat:"s" %}selected{% endif %}>
+                            {{ student.username }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Filter
+                </button>
+                <a href="{% url 'admin_schedule' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-lg"></i> Reset
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="card">
+    <div class="card-header bg-white"><i class="bi bi-calendar3"></i>
+        {% if selected_instructor or selected_student %}
+            Filtered Results ({{ lessons|length }})
+        {% else %}
+            All Appointments ({{ lessons|length }})
+        {% endif %}
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Student</th>
+                    <th>Instructor</th>
+                    <th>Location</th>
+                    <th>Duration</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if lessons %}
+                    {% for lesson in lessons %}
+                    <tr>
+                        <td>{{ lesson.date|date:"d/m/Y" }}</td>
+                        <td>{{ lesson.date|time:"H:i" }}</td>
+                        <td>{{ lesson.student }}</td>
+                        <td>{{ lesson.instructor }}</td>
+                        <td>{{ lesson.location|default:"TBD" }}</td>
+                        <td>{{ lesson.duration }}h</td>
+                        <td>
+                            <a href="{% url 'edit_lesson' lesson.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="{% url 'delete_lesson' lesson.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">No appointments found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "school/base.html" %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>People</h4>
+    <div class="d-flex gap-2">
+        <a href="{% url 'create_user' %}?role=student" class="btn btn-danger btn-sm"><i class="bi bi-person-plus"></i> Add Student</a>
+        <a href="{% url 'create_user' %}?role=instructor" class="btn btn-outline-primary btn-sm"><i class="bi bi-person-plus"></i> Add Instructor</a>
+        <a href="{% url 'create_user' %}?role=secretary" class="btn btn-outline-secondary btn-sm"><i class="bi bi-person-plus"></i> Add Secretary</a>
+    </div>
+</div>
+
+<!-- Students -->
+<div class="card mb-4">
+    <div class="card-header bg-white">
+        <i class="bi bi-people"></i> Students
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Hours Remaining</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if students %}
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.username }}</td>
+                        <td>{{ student.email }}</td>
+                        <td>
+                            {% if student.total_hours_remaining == 0 %}
+                                <span class="badge bg-danger">0 hours</span>
+                            {% else %}
+                                <span class="badge bg-success">{{ student.total_hours_remaining }} h</span>
+                            {% endif %}
+                        </td>
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td>
+                            <a href="{% url 'edit_user' student.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="{% url 'create_package' %}?student={{ student.pk }}" class="btn btn-sm btn-outline-warning">Add Hours</a>
+                            <a href="{% url 'delete_user' student.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                            <a href="{% url 'student_detail' student.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No students yet.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Instructors -->
+<div class="card mb-4">
+    <div class="card-header bg-white">
+        <i class="bi bi-person-badge"></i> Instructors
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if instructors %}
+                    {% for instructor in instructors %}
+                    <tr>
+                        <td>{{ instructor.username }}</td>
+                        <td>{{ instructor.email }}</td>
+                        <td>
+                            <a href="{% url 'edit_user' instructor.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="{% url 'delete_user' instructor.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">No instructors yet.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-white">
+        <i class="bi bi-person-badge"></i> Secretaries
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if secretaries %}
+                    {% for secretary in secretaries %}
+                    <tr>
+                        <td>{{ secretary.username }}</td>
+                        <td>{{ secretary.email }}</td>
+                        <td>
+                            <a href="{% url 'edit_user' secretary.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="{% url 'delete_user' secretary.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">No secretaries yet.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

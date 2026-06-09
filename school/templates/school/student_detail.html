@@ -1,0 +1,128 @@
+{% extends "school/base.html" %}
+
+{% block title %}{{ student.username }} — Profile{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4><i class="bi bi-person-circle"></i> {{ student.first_name }} {{ student.last_name }}
+        {% if not student.first_name and not student.last_name %}{{ student.username }}{% endif %}
+    </h4>
+    <a href="javascript:history.back()" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back
+    </a>
+</div>
+
+<!-- Info + Hours -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-semibold"><i class="bi bi-info-circle"></i> Info</div>
+            <div class="card-body">
+                <p class="mb-2"><span class="text-muted">Username:</span> {{ student.username }}</p>
+                <p class="mb-2"><span class="text-muted">Email:</span> {{ student.email|default:"—" }}</p>
+                <p class="mb-0"><span class="text-muted">Role:</span> <span class="badge bg-secondary">{{ student.role }}</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-semibold"><i class="bi bi-clock-history"></i> Hours</div>
+            <div class="card-body text-center">
+                <h2 class="{% if hours_remaining == 0 %}text-danger{% else %}text-success{% endif %}">
+                    {{ hours_remaining }}h
+                </h2>
+                <p class="text-muted mb-1">remaining</p>
+                <small class="text-muted">{{ hours_used }}h used / {{ hours_total }}h paid</small>
+                {% if hours_remaining == 0 %}
+                    <div class="mt-2"><span class="badge bg-danger">No hours left</span></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-semibold"><i class="bi bi-calendar-check"></i> Lessons</div>
+            <div class="card-body text-center">
+                <h2 class="text-primary">{{ lessons|length }}</h2>
+                <p class="text-muted mb-0">total lessons</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Packages -->
+<div class="card mb-4">
+    <div class="card-header bg-white fw-semibold"><i class="bi bi-box-seam"></i> Packages</div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Hours Paid</th>
+                    <th>Hours Used</th>
+                    <th>Hours Remaining</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if packages %}
+                    {% for package in packages %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ package.hours_total }}h</td>
+                        <td>{{ package.hours_used }}h</td>
+                        <td>{{ package.hours_remaining }}h</td>
+                        <td>
+                            {% if package.hours_remaining == 0 %}
+                                <span class="badge bg-danger">Exhausted</span>
+                            {% else %}
+                                <span class="badge bg-success">Active</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No packages yet.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Lessons -->
+<div class="card">
+    <div class="card-header bg-white fw-semibold"><i class="bi bi-calendar3"></i> Lesson History</div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Instructor</th>
+                    <th>Location</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if lessons %}
+                    {% for lesson in lessons %}
+                    <tr>
+                        <td>{{ lesson.date|date:"d/m/Y" }}</td>
+                        <td>{{ lesson.date|time:"H:i" }}</td>
+                        <td>{{ lesson.instructor }}</td>
+                        <td>{{ lesson.location|default:"TBD" }}</td>
+                        <td>{{ lesson.duration }}h</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No lessons yet.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

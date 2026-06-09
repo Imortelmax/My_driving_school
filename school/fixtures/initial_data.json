@@ -1,0 +1,73 @@
+[
+    {
+        "model": "school.user",
+        "pk": 10,
+        "fields": {
+            "username": "student1",
+            "password": "pbkdf2_sha256$1200000$5GkXWgHbvFZ5FKjCal9m3Z$MVWxxfyhafjx4d510pG7TmxLR8hhcYbtMiXypIlM6bs=",
+            "role": "student",
+            "is_active": true
+        }
+    },
+    {
+        "model": "school.user",
+        "pk": 11,
+        "fields": {
+            "username": "instructor1",
+            "password": "pbkdf2_sha256$1200000$5GkXWgHbvFZ5FKjCal9m3Z$MVWxxfyhafjx4d510pG7TmxLR8hhcYbtMiXypIlM6bs=",
+            "role": "instructor",
+            "is_active": true
+        }
+    },
+    {
+        "model": "school.user",
+        "pk": 12,
+        "fields": {
+            "username": "secretary1",
+            "password": "pbkdf2_sha256$1200000$5GkXWgHbvFZ5FKjCal9m3Z$MVWxxfyhafjx4d510pG7TmxLR8hhcYbtMiXypIlM6bs=",
+            "role": "secretary",
+            "is_active": true
+        }
+    },
+    {
+        "model": "school.user",
+        "pk": 13,
+        "fields": {
+            "username": "admin1",
+            "password": "pbkdf2_sha256$1200000$5GkXWgHbvFZ5FKjCal9m3Z$MVWxxfyhafjx4d510pG7TmxLR8hhcYbtMiXypIlM6bs=",
+            "role": "admin",
+            "is_active": true
+        }
+    },
+    {
+        "model": "school.package",
+        "pk": 1,
+        "fields": {
+            "student": 10,
+            "hours_total": 20,
+            "hours_used": 10
+        }
+    },
+    {
+        "model": "school.lesson",
+        "pk": 10,
+        "fields": {
+            "student": 10,
+            "instructor": 11,
+            "date": "2026-06-19T10:00:00",
+            "location": "Marseille",
+            "duration": 2
+        }
+    },
+    {
+        "model": "school.lesson",
+        "pk": 11,
+        "fields": {
+            "student": 10,
+            "instructor": 11,
+            "date": "2026-06-21T14:00:00",
+            "location": "Aubagne",
+            "duration": 2
+        }
+    }
+]
