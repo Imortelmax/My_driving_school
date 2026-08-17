@@ -2,6 +2,11 @@
 
 Intranet de gestion d'auto-école développé avec Django. Permet de gérer les élèves, les instructeurs, les plannings et les forfaits d'heures de conduite.
 
+## Documentation
+
+- **[Guide utilisateur](docs/guide-utilisateur.md)** — prise en main par rôle (élève, moniteur, secrétaire, admin) : réservation de leçons, suivi du solde d'heures, achat de forfaits.
+- Documentation technique : ce README (installation, déploiement, configuration).
+
 ## Fonctionnalités
 
 ### 4 rôles utilisateurs
